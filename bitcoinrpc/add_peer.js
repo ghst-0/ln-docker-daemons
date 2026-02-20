@@ -1,7 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const rpc = require('./rpc');
+import rpc from './rpc.js';
 
 const action = 'add';
 const cmd = 'addnode';
@@ -18,9 +18,9 @@ const host = 'localhost';
 
   @returns via cbk or Promise
 */
-module.exports = ({pass, port, socket, user}, cbk) => {
+export default ({pass, port, socket, user}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!pass) {

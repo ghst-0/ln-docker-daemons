@@ -1,5 +1,5 @@
-const asyncRetry = require('async/retry');
-const {getPendingChannels} = require('lightning');
+import asyncRetry from 'async/retry.js';
+import { getPendingChannels } from 'lightning';
 
 const interval = 10;
 const times = 20000;
@@ -13,7 +13,7 @@ const times = 20000;
 
   @returns via cbk
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   if (!args.id) {
     return cbk([400, 'ExpectedTransactionIdToWaitForChannelPending']);
   }
@@ -26,7 +26,7 @@ module.exports = (args, cbk) => {
 
   return asyncRetry({interval, times}, cbk => {
     return getPendingChannels({lnd: args.lnd}, (err, res) => {
-      if (!!err) {
+      if (err) {
         return cbk(err);
       }
 

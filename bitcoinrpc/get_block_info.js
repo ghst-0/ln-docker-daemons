@@ -1,7 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const rpc = require('./rpc');
+import rpc from './rpc.js';
 
 const cmd = 'getblock';
 const host = 'localhost';
@@ -21,9 +21,9 @@ const infoVerbosityFlag = 1;
     tx: [<Transaction Id Hex String>]
   }
 */
-module.exports = ({id, pass, port, user}, cbk) => {
+export default ({id, pass, port, user}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!id) {

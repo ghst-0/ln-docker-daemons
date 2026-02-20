@@ -1,7 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const rpc = require('./rpc');
+import rpc from './rpc.js';
 
 const cmd = 'getblockchaininfo';
 const host = 'localhost';
@@ -20,9 +20,9 @@ const params = [];
     blocks: <Best Chain Block Height Number>
   }
 */
-module.exports = ({pass, port, user}, cbk) => {
+export default ({pass, port, user}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!pass) {

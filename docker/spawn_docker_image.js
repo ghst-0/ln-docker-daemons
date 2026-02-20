@@ -1,10 +1,10 @@
-const asyncAuto = require('async/auto');
-const asyncRetry = require('async/retry');
-const Dockerode = require('dockerode');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto';
+import asyncRetry from 'async/retry';
+import Dockerode from 'dockerode';
+import {returnResult} from 'asyncjs-util';
 
-const getFile = require('./get_file');
-const killDocker = require('./kill_docker');
+import getFile from './get_file.js';
+import killDocker from './kill_docker.js';
 
 const {isArray} = Array;
 const {keys} =  Object;
@@ -27,12 +27,12 @@ const stopAfterRuntimeSeconds = 60;
     kill: <Kill Daemon Function>
   }
 */
-module.exports = ({arguments, expose, image, ports}, cbk) => {
+export default ({_arguments, expose, image, ports}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
-        if (!isArray(arguments)) {
+        if (!isArray(_arguments)) {
           return cbk([400, 'ExpectedArgumentsListToSpawnDockerImage']);
         }
 
@@ -74,17 +74,17 @@ module.exports = ({arguments, expose, image, ports}, cbk) => {
       // Pull the docker image
       pull: ['docker', 'getImage', ({docker, getImage}, cbk) => {
         // Exit early when the image is already pulled
-        if (!!getImage) {
+        if (getImage) {
           return cbk();
         }
 
         return docker.pull(image, (err, stream) => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'FailedToPullImageToSpawnDockerImage', {err}]);
           }
 
           return docker.modem.followProgress(stream, err => {
-            if (!!err) {
+            if (err) {
               return cbk([503, 'PullFailedToCompleteSpawningDockerImage']);
             }
 
@@ -96,7 +96,7 @@ module.exports = ({arguments, expose, image, ports}, cbk) => {
       // Create the container
       container: ['docker', 'pull', ({docker}, cbk) => {
         return docker.createContainer({
-          Cmd: arguments,
+          Cmd: _arguments,
           ExposedPorts: (expose || []).reduce((sum, port) => {
             sum[port.toString()] = {};
 
@@ -116,7 +116,7 @@ module.exports = ({arguments, expose, image, ports}, cbk) => {
           StopTimeout: stopAfterRuntimeSeconds,
         },
         (err, container) => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorCreatingDockerContainer', {err}]);
           }
 
@@ -128,7 +128,7 @@ module.exports = ({arguments, expose, image, ports}, cbk) => {
       start: ['container', 'docker', ({container, docker}, cbk) => {
         return asyncRetry({}, cbk => {
           return container.start(err => {
-            if (!!err) {
+            if (err) {
               return cbk([503, 'UnexpectedErrorStartingContainer', {err}]);
             }
 
@@ -141,7 +141,7 @@ module.exports = ({arguments, expose, image, ports}, cbk) => {
       // Get the details about the container
       spawned: ['container', 'start', ({container}, cbk) => {
         return container.inspect({}, (err, res) => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorGettingContainerDetails', {err}]);
           }
 

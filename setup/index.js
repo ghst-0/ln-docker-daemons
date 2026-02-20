@@ -1,3 +1,3 @@
-const setupChannel = require('./setup_channel');
+import setupChannel from './setup_channel.js';
 
-module.exports = {setupChannel};
+export { setupChannel };

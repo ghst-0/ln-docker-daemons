@@ -1,3 +1,3 @@
-const spawnLightningCluster = require('./spawn_lightning_cluster');
+import spawnLightningCluster from './spawn_lightning_cluster.js';
 
-module.exports = {spawnLightningCluster};
+export { spawnLightningCluster };

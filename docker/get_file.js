@@ -1,6 +1,6 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
-const tar = require('tar-stream');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
+import tar from 'tar-stream';
 
 /** Get a file from inside a docker container
 
@@ -14,9 +14,9 @@ const tar = require('tar-stream');
     file: <File Buffer Object>
   }
 */
-module.exports = ({container, path}, cbk) => {
+export default ({container, path}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!container) {
@@ -34,11 +34,11 @@ module.exports = ({container, path}, cbk) => {
       getArchive: ['validate', ({}, cbk) => {
         return container.getArchive({path}, (err, stream) => {
           // Exit early when there are no files at the path
-          if (!!err && err.statusCode === 404) {
+          if (err && err.statusCode === 404) {
             return cbk([404, 'FailedToFindFileAtPathInContainer']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorGettingFileFromDocker', {err}]);
           }
 
@@ -62,8 +62,6 @@ module.exports = ({container, path}, cbk) => {
           extract.once('finish', () => cbk(null, entries));
 
           stream.pipe(extract);
-
-          return;
         });
       }],
 

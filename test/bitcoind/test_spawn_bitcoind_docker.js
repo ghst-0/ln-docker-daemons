@@ -1,8 +1,7 @@
-const test = require('node:test');
+import test from 'node:test';
+import { findFreePorts } from 'find-free-ports';
 
-const {findFreePorts} = require('find-free-ports');
-
-const {spawnBitcoindDocker} = require('./../../');
+import { spawnBitcoindDocker } from './../../index.js';
 
 // Spawning a Bitcoin Core docker image should launch
 test('Spawn Bitcoin Core Docker image', async () => {
@@ -19,6 +18,4 @@ test('Spawn Bitcoin Core Docker image', async () => {
   });
 
   await kill({});
-
-  return;
 });

@@ -1,9 +1,7 @@
-const asyncAuto = require('async/auto');
-const asyncRetry = require('async/retry');
-const {returnResult} = require('asyncjs-util');
-
-const {getChannel} = require('lightning');
-const {getChannels} = require('lightning');
+import asyncAuto from 'async/auto.js';
+import asyncRetry from 'async/retry.js';
+import { returnResult } from 'asyncjs-util';
+import { getChannel, getChannels } from 'lightning';
 
 const interval = 20;
 const times = 10000;
@@ -43,9 +41,9 @@ const times = 10000;
     unsettled_balance: <Unsettled Balance Tokens Number>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!args.id) {
@@ -83,11 +81,9 @@ module.exports = (args, cbk) => {
         return await asyncRetry({interval, times}, async () => {
           const {policies} = await getChannel({id: channel.id, lnd: args.lnd});
 
-          if (!!policies.find(n => !n.cltv_delta)) {
+          if (policies.some(n => !n.cltv_delta)) {
             throw new Error('FailedToFindChannelWithFullPolicyDetails');
           }
-
-          return;
         });
       }],
     },

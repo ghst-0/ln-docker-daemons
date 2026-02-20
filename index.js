@@ -1,13 +1,12 @@
-const {setupChannel} = require('./setup');
-const {spawnBitcoindDocker} = require('./bitcoind');
-const {spawnLightningCluster} = require('./cluster');
-const {spawnLightningDocker} =  require('./lnd');
-const {spawnLndDocker} =  require('./lnd');
+import { setupChannel } from './setup/index.js';
+import { spawnBitcoindDocker } from './bitcoind/index.js';
+import { spawnLightningCluster } from './cluster/index.js';
+import { spawnLightningDocker, spawnLndDocker } from './lnd/index.js';
 
-module.exports = {
+export {
   setupChannel,
   spawnBitcoindDocker,
   spawnLightningCluster,
   spawnLightningDocker,
-  spawnLndDocker,
+  spawnLndDocker
 };

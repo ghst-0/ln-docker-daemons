@@ -1,17 +1,16 @@
-const asyncAuto = require('async/auto');
-const asyncRetry = require('async/retry');
-const {authenticatedLndGrpc} = require('lightning');
-const {getWalletInfo} = require('lightning/lnd_methods');
-const {returnResult} = require('asyncjs-util');
-const {unauthenticatedLndGrpc} = require('lightning');
+import asyncAuto from 'async/auto';
+import asyncRetry from 'async/retry';
+import { authenticatedLndGrpc, unauthenticatedLndGrpc } from 'lightning';
+import { getWalletInfo } from 'lightning/lnd_methods';
+import { returnResult } from 'asyncjs-util';
 
-const {dockerLndImage} = require('./constants');
-const {spawnDockerImage} = require('./../docker');
+import constants from './constants.json' with { type: 'json' };
+import { spawnDockerImage } from './../docker/index.js';
 
-const imageName = ver => !!ver ? `lightninglabs/lnd:${ver}` : dockerLndImage;
+const { dockerLndImage } = constants;
+const imageName = ver => ver ? `lightninglabs/lnd:${ver}` : dockerLndImage;
 const interval = 100;
 const join = n => n.join('');
-const macaroonPath = '/root/.lnd/data/chain/bitcoin/regtest/admin.macaroon';
 const times = 500;
 const tlsCertPath = '/root/.lnd/tls.cert';
 
@@ -41,9 +40,9 @@ const tlsCertPath = '/root/.lnd/tls.cert';
     tower_socket: <LND Tower Socket Host:Port Network Address String>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!args.bitcoind_rpc_pass) {
@@ -79,7 +78,7 @@ module.exports = (args, cbk) => {
         const zmqBlockPort = args.bitcoind_zmq_block_port;
         const zmqTxPort = args.bitcoind_zmq_tx_port;
 
-        const arguments = [
+        const _arguments = [
           '--accept-keysend',
           '--allow-circular-route',
           '--autopilot.heuristic=externalscore:0.5',
@@ -104,28 +103,28 @@ module.exports = (args, cbk) => {
           '--watchtower.listen', `127.0.0.1:9911`,
         ];
 
-        if (!!zmqBlockPort) {
-          arguments.push(join([
+        if (zmqBlockPort) {
+          _arguments.push(join([
             '--bitcoind.zmqpubrawblock=tcp://',
             chainHost,
             ':',
             zmqBlockPort,
           ]));
 
-          arguments.push(join([
+          _arguments.push(join([
             '--bitcoind.zmqpubrawtx=tcp://',
             chainHost,
             ':',
             zmqTxPort
           ]));
         } else {
-          arguments.push('--bitcoind.rpcpolling');
-          arguments.push('--bitcoind.blockpollinginterval=1s');
-          arguments.push('--bitcoind.txpollinginterval=1s');
+          _arguments.push('--bitcoind.rpcpolling');
+          _arguments.push('--bitcoind.blockpollinginterval=1s');
+          _arguments.push('--bitcoind.txpollinginterval=1s');
         }
 
         return spawnDockerImage({
-          arguments: arguments.concat(args.configuration || []),
+          arguments: _arguments.concat(args.configuration || []),
           image: imageName(process.env.DOCKER_LND_VERSION),
           ports: {
             '9735/tcp': args.p2p_port,
@@ -153,7 +152,7 @@ module.exports = (args, cbk) => {
 
         return asyncRetry({interval, times}, cbk => {
           return lnd.unlocker.genSeed({}, (err, res) => {
-            if (!!err) {
+            if (err) {
               return cbk([503, 'UnexpectedErrorGeneratingSeed', {err}]);
             }
 
@@ -164,7 +163,7 @@ module.exports = (args, cbk) => {
               wallet_password: Buffer.from('password', 'utf8'),
             },
             (err, res) => {
-              if (!!err) {
+              if (err) {
                 return cbk([503, 'UnexpectedErrorInitializingWallet', {err}]);
               }
 

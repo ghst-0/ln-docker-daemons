@@ -1,12 +1,10 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {addPeer} = require('./../bitcoinrpc');
-const {generateToAddress} = require('./../bitcoinrpc');
-const {getBlockInfo} = require('./../bitcoinrpc');
-const {killDockers} = require('./../docker');
-const {spawnBitcoindDocker} = require('./../bitcoind');
-const spawnLndDocker = require('./spawn_lnd_docker');
+import { addPeer, generateToAddress, getBlockInfo } from './../bitcoinrpc/index.js';
+import { killDockers } from './../docker/index.js';
+import { spawnBitcoindDocker } from './../bitcoind/index.js';
+import spawnLndDocker from './spawn_lnd_docker.js';
 
 const defaultBitcoindRpcPort = 18443;
 
@@ -40,9 +38,9 @@ const defaultBitcoindRpcPort = 18443;
     tower_socket: <LND Tower Socket Host:Port Network Address String>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!args.chain_p2p_port) {

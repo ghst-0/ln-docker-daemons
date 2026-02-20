@@ -1,9 +1,9 @@
-const addPeer = require('./add_peer');
-const generateToAddress = require('./generate_to_address');
-const getBlockInfo = require('./get_block_info');
-const getBlockchainInfo = require('./get_blockchain_info');
+import addPeer from './add_peer.js';
+import generateToAddress from './generate_to_address.js';
+import getBlockInfo from './get_block_info.js';
+import getBlockchainInfo from './get_blockchain_info.js';
 
-module.exports = {
+export {
   addPeer,
   generateToAddress,
   getBlockInfo,

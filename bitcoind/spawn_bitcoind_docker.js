@@ -1,23 +1,21 @@
-const {createHmac} = require('crypto');
-const {randomBytes} = require('crypto');
+import { createHmac, randomBytes } from 'node:crypto';
 
-const asyncAuto = require('async/auto');
-const asyncRetry = require('async/retry');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto';
+import asyncRetry from 'async/retry';
+import { returnResult } from 'asyncjs-util';
 
-const {bitcoindPorts} = require('./constants');
-const {dockerBitcoindImage} = require('./constants');
-const {getBlockchainInfo} = require('./../bitcoinrpc');
-const {rpcUser} = require('./constants');
-const {spawnDockerImage} =  require('./../docker');
+import constants from './constants.json' with { type: 'json' };
+import { getBlockchainInfo } from './../bitcoinrpc/index.js';
+import { spawnDockerImage } from './../docker/index.js';
 
-const clean = string => string.replace(/\+/g, '-').replace(/\//g, '_');
+const { dockerBitcoindImage, rpcUser } = constants;
+const clean = string => string.replaceAll('+', '-').replaceAll('/', '_');
 const deriveHmac = (s, p) => createHmac('sha256', s).update(p).digest('hex');
 const generateAuthSalt = () => randomBytes(16).toString('hex');
 const generatePassword = () => randomBytes(32).toString('base64');
 const interval = 100;
 const times = 100;
-const trim = string => string.replace(/=+$/g, '');
+const trim = string => string.replaceAll(/=+$/g, '');
 
 /** Spawn a Bitcoin Core Docker image
 
@@ -36,9 +34,9 @@ const trim = string => string.replace(/=+$/g, '');
     rpc_user: <RPC Username String>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!args.p2p_port) {
@@ -65,7 +63,7 @@ module.exports = (args, cbk) => {
 
       // Spawn the docker image
       spawnDocker: ['generateAuth', ({generateAuth}, cbk) => {
-        const arguments = [
+        const _arguments = [
           '--disablewallet',
           '--listen=1',
           '--persistmempool=false',
@@ -81,17 +79,17 @@ module.exports = (args, cbk) => {
         const image = dockerBitcoindImage;
         const ports = {'18443/tcp': args.rpc_port, '18444/tcp': args.p2p_port};
 
-        if (!!args.zmq_block_port) {
-          arguments.push('--zmqpubrawblock=tcp://*:' + args.zmq_block_port);
+        if (args.zmq_block_port) {
+          _arguments.push('--zmqpubrawblock=tcp://*:' + args.zmq_block_port);
           ports[`${args.zmq_block_port}/tcp`] = args.zmq_block_port;
         }
 
-        if (!!args.zmq_tx_port) {
-          arguments.push('--zmqpubrawtx=tcp://*:' + args.zmq_tx_port);
+        if (args.zmq_tx_port) {
+          _arguments.push('--zmqpubrawtx=tcp://*:' + args.zmq_tx_port);
           ports[`${args.zmq_tx_port}/tcp`] = args.zmq_tx_port;
         }
 
-        return spawnDockerImage({arguments, image, ports}, cbk);
+        return spawnDockerImage({_arguments, image, ports}, cbk);
       }],
 
       // Wait for the image to respond to a query

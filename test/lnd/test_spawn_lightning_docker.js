@@ -1,6 +1,5 @@
-const test = require('node:test');
-
-const {spawnLightningDocker} = require('./../../');
+import test from 'node:test';
+import { spawnLightningDocker } from './../../index.js';
 
 // Spawning a Lightning node docker image should launch
 test('Spawn Lightning node image', async () => {
@@ -16,6 +15,4 @@ test('Spawn Lightning node image', async () => {
   });
 
   await kill({});
-
-  return;
 });

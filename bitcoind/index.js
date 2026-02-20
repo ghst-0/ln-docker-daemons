@@ -1,3 +1,3 @@
-const spawnBitcoindDocker = require('./spawn_bitcoind_docker');
+import spawnBitcoindDocker from './spawn_bitcoind_docker.js';
 
-module.exports = {spawnBitcoindDocker};
+export { spawnBitcoindDocker };

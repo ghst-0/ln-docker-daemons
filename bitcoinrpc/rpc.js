@@ -1,12 +1,9 @@
-const fetch = require('@alexbosworth/node-fetch');
-const http = require('http');
-const https = require('https');
+import http from 'node:http';
+import https from 'node:https';
+import fetch from '@alexbosworth/node-fetch';
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
-
-const defaultTimeout = 1000 * 30;
-const agents = {};
 let requests = 0;
 const {stringify} = JSON;
 
@@ -25,9 +22,9 @@ const {stringify} = JSON;
   @returns via cbk or Promise
   <Result Object>
 */
-module.exports = ({cert, cmd, host, params, pass, port, user}, cbk) => {
+export default ({cert, cmd, host, params, pass, port, user}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!cmd) {
@@ -54,7 +51,7 @@ module.exports = ({cert, cmd, host, params, pass, port, user}, cbk) => {
       },
 
       // Derive an HTTP agent as necessary for using a self-signed cert
-      agent: ['validate', async ({}) => {
+      agent: ['validate', ({}) => {
         // Exit early when there is no cert and this is a regular HTTP request
         if (!cert) {
           return new http.Agent({});
@@ -66,7 +63,7 @@ module.exports = ({cert, cmd, host, params, pass, port, user}, cbk) => {
       // Send request to the server
       request: ['agent', async ({agent}) => {
         const credentials = Buffer.from(`${user}:${pass}`);
-        const scheme = !!cert ? 'https' : 'http';
+        const scheme = cert ? 'https' : 'http';
 
         try {
         	const response = await fetch(

@@ -1,6 +1,6 @@
-const asyncAuto = require('async/auto');
-const asyncEach = require('async/each');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import asyncEach from 'async/each.js';
+import { returnResult } from 'asyncjs-util';
 
 const {isArray} = Array;
 
@@ -14,9 +14,9 @@ const {isArray} = Array;
 
   @returns via cbk or Promise
 */
-module.exports = ({dockers}, cbk) => {
+export default ({dockers}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isArray(dockers)) {

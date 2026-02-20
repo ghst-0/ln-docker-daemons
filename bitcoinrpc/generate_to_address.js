@@ -1,7 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const rpc = require('./rpc');
+import rpc from './rpc.js';
 
 const cmd = 'generatetoaddress';
 const host = 'localhost';
@@ -21,9 +21,9 @@ const host = 'localhost';
     blocks: <Best Chain Block Height Number>
   }
 */
-module.exports = ({address, count, pass, port, user}, cbk) => {
+export default ({address, count, pass, port, user}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!address) {
@@ -47,7 +47,7 @@ module.exports = ({address, count, pass, port, user}, cbk) => {
 
       // Execute request
       request: ['validate', ({}, cbk) => {
-        const params = [count || [address].length, address];
+        const params = [count || [address].length > 0, address];
 
         return rpc({cmd, host, pass, params, port, user}, cbk);
       }],

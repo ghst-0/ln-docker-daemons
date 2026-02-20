@@ -16,6 +16,7 @@
     "tar-stream": "3.1.7"
   },
   "description": "Spawn and control LN Docker daemons",
+  "type": "module",
   "engines": {
     "node": ">=18"
   },

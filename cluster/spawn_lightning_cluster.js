@@ -1,15 +1,17 @@
-const asyncAuto = require('async/auto');
-const asyncEach = require('async/each');
-const asyncMap = require('async/map');
-const asyncRetry = require('async/retry');
-const {authenticatedLndGrpc} = require('lightning');
-const {createChainAddress} = require('lightning');
-const {findFreePorts} = require('find-free-ports');
-const {getUtxos} = require('lightning');
-const {getIdentity} = require('lightning');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import asyncEach from 'async/each.js';
+import asyncMap from 'async/map.js';
+import asyncRetry from 'async/retry.js';
+import {
+  authenticatedLndGrpc,
+  createChainAddress,
+  getUtxos,
+  getIdentity
+} from 'lightning';
+import { findFreePorts  } from 'find-free-ports';
+import { returnResult } from 'asyncjs-util';
 
-const {spawnLightningDocker} = require('./../lnd');
+import { spawnLightningDocker } from './../lnd/index.js';
 
 const between = (min, max) => Math.floor(Math.random() * (max - min) + min);
 const chunk = (arr, n, size) => [...Array(size)].map(_ => arr.splice(0, n));
@@ -19,7 +21,7 @@ const generateAddress = '2N8hwP1WmJrFF5QWABn38y63uYLhnJYJYTF';
 const interval = 10;
 const makeAddress = ({lnd}) => createChainAddress({lnd});
 const maturity = 100;
-const pairs = n => n.map((x, i) => n.slice(i + 1).map(y => [x, y])).flat();
+const pairs = n => n.flatMap((x, i) => n.slice(i + 1).map(y => [x, y]));
 const portsPerLnd = 7;
 const startPort = 1025;
 const times = 3000;
@@ -44,9 +46,9 @@ const times = 3000;
     }]
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Spawn nodes
       spawn: async () => {
         return await asyncRetry({interval, times: 25}, async () => {
@@ -108,7 +110,7 @@ module.exports = (args, cbk) => {
                   });
 
                   if (!count || count < maturity) {
-                    return resolve();
+                    resolve();
                   }
 
                   await asyncRetry({interval, times}, async () => {
@@ -121,7 +123,7 @@ module.exports = (args, cbk) => {
                     return utxo;
                   });
 
-                  return resolve();
+                  resolve();
                 });
               },
               kill: lightningDocker.kill,

@@ -1,4 +1,4 @@
-const killDockers = require('./kill_dockers');
-const spawnDockerImage = require('./spawn_docker_image');
+import killDockers from './kill_dockers.js';
+import spawnDockerImage from './spawn_docker_image.js';
 
-module.exports = {killDockers, spawnDockerImage};
+export { killDockers, spawnDockerImage };
