@@ -1,6 +1,5 @@
 import http from 'node:http';
 import https from 'node:https';
-import fetch from '@alexbosworth/node-fetch';
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
