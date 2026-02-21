@@ -11,7 +11,7 @@ import {
 import { findFreePorts  } from 'find-free-ports';
 import { returnResult } from 'asyncjs-util';
 
-import { spawnLightningDocker } from './../lnd/index.js';
+import { spawnLightningDocker } from '../lnd/index.js';
 
 const between = (min, max) => Math.floor(Math.random() * (max - min) + min);
 const chunk = (arr, n, size) => [...Array(size)].map(_ => arr.splice(0, n));

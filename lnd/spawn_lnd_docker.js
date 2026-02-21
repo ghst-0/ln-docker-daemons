@@ -5,7 +5,7 @@ import { getWalletInfo } from 'lightning/lnd_methods';
 import { returnResult } from 'asyncjs-util';
 
 import constants from './constants.json' with { type: 'json' };
-import { spawnDockerImage } from './../docker/index.js';
+import { spawnDockerImage } from '../docker/index.js';
 
 const { dockerLndImage } = constants;
 const imageName = ver => ver ? `lightninglabs/lnd:${ver}` : dockerLndImage;

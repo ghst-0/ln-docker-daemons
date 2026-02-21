@@ -1,7 +1,7 @@
 import test from 'node:test';
 import { findFreePorts } from 'find-free-ports';
 
-import { spawnBitcoindDocker } from './../../index.js';
+import { spawnBitcoindDocker } from '../../index.js';
 
 // Spawning a Bitcoin Core docker image should launch
 test('Spawn Bitcoin Core Docker image', async () => {

@@ -5,8 +5,8 @@ import asyncRetry from 'async/retry';
 import { returnResult } from 'asyncjs-util';
 
 import constants from './constants.json' with { type: 'json' };
-import { getBlockchainInfo } from './../bitcoinrpc/index.js';
-import { spawnDockerImage } from './../docker/index.js';
+import { getBlockchainInfo } from '../bitcoinrpc/index.js';
+import { spawnDockerImage } from '../docker/index.js';
 
 const { dockerBitcoindImage, rpcUser } = constants;
 const clean = string => string.replaceAll('+', '-').replaceAll('/', '_');

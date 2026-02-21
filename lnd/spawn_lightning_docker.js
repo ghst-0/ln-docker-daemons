@@ -1,9 +1,9 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { addPeer, generateToAddress, getBlockInfo } from './../bitcoinrpc/index.js';
-import { killDockers } from './../docker/index.js';
-import { spawnBitcoindDocker } from './../bitcoind/index.js';
+import { addPeer, generateToAddress, getBlockInfo } from '../bitcoinrpc/index.js';
+import { killDockers } from '../docker/index.js';
+import { spawnBitcoindDocker } from '../bitcoind/index.js';
 import spawnLndDocker from './spawn_lnd_docker.js';
 
 const defaultBitcoindRpcPort = 18443;
