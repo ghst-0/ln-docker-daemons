@@ -17,7 +17,7 @@
   "description": "Spawn and control LN Docker daemons",
   "type": "module",
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "keywords": [
     "docker",
