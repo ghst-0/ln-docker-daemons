@@ -1,5 +1,5 @@
-import asyncAuto from 'async/auto';
-import asyncRetry from 'async/retry';
+import asyncAuto from 'async/auto.js';
+import asyncRetry from 'async/retry.js';
 import Dockerode from 'dockerode';
 import {returnResult} from 'asyncjs-util';
 

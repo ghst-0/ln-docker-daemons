@@ -1,7 +1,7 @@
 import { createHmac, randomBytes } from 'node:crypto';
 
-import asyncAuto from 'async/auto';
-import asyncRetry from 'async/retry';
+import asyncAuto from 'async/auto.js';
+import asyncRetry from 'async/retry.js';
 import { returnResult } from 'asyncjs-util';
 
 import constants from './constants.json' with { type: 'json' };

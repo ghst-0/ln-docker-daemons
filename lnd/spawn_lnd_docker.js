@@ -1,7 +1,7 @@
-import asyncAuto from 'async/auto';
-import asyncRetry from 'async/retry';
+import asyncAuto from 'async/auto.js';
+import asyncRetry from 'async/retry.js';
 import { authenticatedLndGrpc, unauthenticatedLndGrpc } from 'lightning';
-import { getWalletInfo } from 'lightning/lnd_methods';
+import { getWalletInfo } from 'lightning/lnd_methods/index.js';
 import { returnResult } from 'asyncjs-util';
 
 import constants from './constants.json' with { type: 'json' };
