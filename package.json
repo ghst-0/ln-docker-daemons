@@ -8,10 +8,10 @@
   },
   "dependencies": {
     "async": "3.2.6",
-    "asyncjs-util": "workspace*",
+    "asyncjs-util": "workspace:asyncjs-util",
     "dockerode": "4.0.9",
     "find-free-ports": "3.1.1",
-    "lightning": "workspace:*",
+    "lightning": "workspace:lightning",
     "tar-stream": "3.1.7"
   },
   "description": "Spawn and control LN Docker daemons",
