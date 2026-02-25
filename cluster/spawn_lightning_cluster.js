@@ -11,7 +11,7 @@ import {
 import { findFreePorts  } from 'find-free-ports';
 import { returnResult } from 'asyncjs-util';
 
-import { spawnLightningDocker } from '../lnd/index.js';
+import { spawnLndDocker } from '../lnd/spawn_lnd_docker.js';
 
 const between = (min, max) => Math.floor(Math.random() * (max - min) + min);
 const chunk = (arr, n, size) => [...Array(size)].map(_ => arr.splice(0, n));
@@ -46,7 +46,7 @@ const times = 3000;
     }]
   }
 */
-export default (args, cbk) => {
+const spawnLightningCluster = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Spawn nodes
@@ -73,7 +73,7 @@ export default (args, cbk) => {
               lightningTowerPort,
             ] = ports;
 
-            const lightningDocker = await spawnLightningDocker({
+            const lightningDocker = await spawnLndDocker({
               chain_p2p_port: chainP2pPort,
               chain_rpc_port: chainRpcPort,
               chain_zmq_block_port: chainZmqBlockPort,
@@ -172,3 +172,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'nodes'}, cbk));
   });
 };
+
+export { spawnLightningCluster }

@@ -1,10 +1,12 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { addPeer, generateToAddress, getBlockInfo } from '../bitcoinrpc/index.js';
-import { killDockers } from '../docker/index.js';
-import { spawnBitcoindDocker } from '../bitcoind/index.js';
-import spawnLndDocker from './spawn_lnd_docker.js';
+import { addPeer } from '../bitcoinrpc/add_peer.js';
+import { generateToAddress } from '../bitcoinrpc/generate_to_address.js';
+import { getBlockInfo } from '../bitcoinrpc/get_block_info.js';
+import { killDockers } from '../docker/kill_dockers.js';
+import { spawnBitcoindDocker } from '../bitcoind/spawn_bitcoind_docker.js';
+import { spawnLndDocker } from './spawn_lnd_docker.js';
 
 const defaultBitcoindRpcPort = 18443;
 
@@ -38,7 +40,7 @@ const defaultBitcoindRpcPort = 18443;
     tower_socket: <LND Tower Socket Host:Port Network Address String>
   }
 */
-export default (args, cbk) => {
+const spawnLightningDocker = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -164,3 +166,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'daemon'}, cbk));
   });
 };
+
+export { spawnLightningDocker }

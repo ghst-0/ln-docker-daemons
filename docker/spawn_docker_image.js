@@ -1,10 +1,10 @@
 import asyncAuto from 'async/auto.js';
 import asyncRetry from 'async/retry.js';
 import Dockerode from 'dockerode';
-import {returnResult} from 'asyncjs-util';
+import { returnResult } from 'asyncjs-util';
 
-import getFile from './get_file.js';
-import killDocker from './kill_docker.js';
+import { getFile } from './get_file.js';
+import { killDocker } from './kill_docker.js';
 
 const {isArray} = Array;
 const {keys} =  Object;
@@ -27,7 +27,7 @@ const stopAfterRuntimeSeconds = 60;
     kill: <Kill Daemon Function>
   }
 */
-export default ({_arguments, expose, image, ports}, cbk) => {
+const spawnDockerImage = ({_arguments, expose, image, ports}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -156,3 +156,5 @@ export default ({_arguments, expose, image, ports}, cbk) => {
     returnResult({reject, resolve, of: 'spawned'}, cbk));
   });
 };
+
+export { spawnDockerImage }

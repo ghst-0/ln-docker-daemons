@@ -21,7 +21,7 @@ const {stringify} = JSON;
   @returns via cbk or Promise
   <Result Object>
 */
-export default ({cert, cmd, host, params, pass, port, user}, cbk) => {
+const rpc = ({cert, cmd, host, params, pass, port, user}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -97,3 +97,5 @@ export default ({cert, cmd, host, params, pass, port, user}, cbk) => {
     returnResult({reject, resolve, of: 'request'}, cbk));
   });
 };
+
+export { rpc }

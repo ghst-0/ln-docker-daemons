@@ -1,11 +1,11 @@
 import asyncAuto from 'async/auto.js';
 import asyncRetry from 'async/retry.js';
 import { authenticatedLndGrpc, unauthenticatedLndGrpc } from 'lightning';
-import { getWalletInfo } from 'lightning/lnd_methods/index.js';
+import { getWalletInfo } from 'lightning/lnd_methods/info/get_wallet_info.js';
 import { returnResult } from 'asyncjs-util';
 
 import constants from './constants.json' with { type: 'json' };
-import { spawnDockerImage } from '../docker/index.js';
+import { spawnDockerImage } from '../docker/spawn_docker_image.js';
 
 const { dockerLndImage } = constants;
 const imageName = ver => ver ? `lightninglabs/lnd:${ver}` : dockerLndImage;
@@ -40,7 +40,7 @@ const tlsCertPath = '/root/.lnd/tls.cert';
     tower_socket: <LND Tower Socket Host:Port Network Address String>
   }
 */
-export default (args, cbk) => {
+const spawnLndDocker = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -215,3 +215,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'spawned'}, cbk));
   });
 };
+
+export { spawnLndDocker }

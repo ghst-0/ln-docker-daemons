@@ -12,7 +12,7 @@ const t = 1;
 
   @returns via cbk or Promise
 */
-export default ({container}, cbk) => {
+const killDocker = ({container}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -67,3 +67,5 @@ export default ({container}, cbk) => {
     returnResult({reject, resolve}, cbk));
   });
 };
+
+export { killDocker }

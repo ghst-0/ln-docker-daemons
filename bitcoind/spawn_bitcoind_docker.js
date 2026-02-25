@@ -5,8 +5,8 @@ import asyncRetry from 'async/retry.js';
 import { returnResult } from 'asyncjs-util';
 
 import constants from './constants.json' with { type: 'json' };
-import { getBlockchainInfo } from '../bitcoinrpc/index.js';
-import { spawnDockerImage } from '../docker/index.js';
+import { getBlockchainInfo } from '../bitcoinrpc/get_blockchain_info.js';
+import { spawnDockerImage } from '../docker/spawn_docker_image.js';
 
 const { dockerBitcoindImage, rpcUser } = constants;
 const clean = string => string.replaceAll('+', '-').replaceAll('/', '_');
@@ -34,7 +34,7 @@ const trim = string => string.replaceAll(/=+$/g, '');
     rpc_user: <RPC Username String>
   }
 */
-export default (args, cbk) => {
+const spawnBitcoindDocker = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -123,3 +123,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'spawned'}, cbk));
   });
 };
+
+export { spawnBitcoindDocker }

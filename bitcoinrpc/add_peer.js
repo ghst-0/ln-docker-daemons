@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import rpc from './rpc.js';
+import { rpc } from './rpc.js';
 
 const action = 'add';
 const cmd = 'addnode';
@@ -18,7 +18,7 @@ const host = 'localhost';
 
   @returns via cbk or Promise
 */
-export default ({pass, port, socket, user}, cbk) => {
+const addPeer = ({pass, port, socket, user}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -52,3 +52,5 @@ export default ({pass, port, socket, user}, cbk) => {
     returnResult({reject, resolve}, cbk));
   });
 };
+
+export { addPeer }

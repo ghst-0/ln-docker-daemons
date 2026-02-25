@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import rpc from './rpc.js';
+import { rpc } from './rpc.js';
 
 const cmd = 'getblock';
 const host = 'localhost';
@@ -21,7 +21,7 @@ const infoVerbosityFlag = 1;
     tx: [<Transaction Id Hex String>]
   }
 */
-export default ({id, pass, port, user}, cbk) => {
+const getBlockInfo = ({id, pass, port, user}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -55,3 +55,5 @@ export default ({id, pass, port, user}, cbk) => {
     returnResult({reject, resolve, of: 'request'}, cbk));
   });
 };
+
+export { getBlockInfo }

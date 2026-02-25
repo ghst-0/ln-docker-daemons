@@ -14,7 +14,7 @@ import tar from 'tar-stream';
     file: <File Buffer Object>
   }
 */
-export default ({container, path}, cbk) => {
+const getFile = ({container, path}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -75,3 +75,5 @@ export default ({container, path}, cbk) => {
     returnResult({reject, resolve, of: 'file'}, cbk));
   });
 };
+
+export { getFile }

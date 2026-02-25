@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import rpc from './rpc.js';
+import { rpc } from './rpc.js';
 
 const cmd = 'generatetoaddress';
 const host = 'localhost';
@@ -21,7 +21,7 @@ const host = 'localhost';
     blocks: <Best Chain Block Height Number>
   }
 */
-export default ({address, count, pass, port, user}, cbk) => {
+const generateToAddress = ({address, count, pass, port, user}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -55,3 +55,5 @@ export default ({address, count, pass, port, user}, cbk) => {
     returnResult({reject, resolve, of: 'request'}, cbk));
   });
 };
+
+export { generateToAddress }

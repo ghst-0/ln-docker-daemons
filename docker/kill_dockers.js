@@ -14,7 +14,7 @@ const {isArray} = Array;
 
   @returns via cbk or Promise
 */
-export default ({dockers}, cbk) => {
+const killDockers = ({dockers}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -34,3 +34,5 @@ export default ({dockers}, cbk) => {
     returnResult({reject, resolve}, cbk));
   });
 };
+
+export { killDockers }

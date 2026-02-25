@@ -3,8 +3,8 @@ import asyncAuto from 'async/auto.js';
 import asyncRetry from 'async/retry.js';
 import { returnResult } from 'asyncjs-util';
 
-import waitForChannel from './wait_for_channel.js';
-import waitForPendingChannel from './wait_for_pending_channel.js';
+import { waitForChannel } from './wait_for_channel.js';
+import { waitForPendingChannel } from './wait_for_pending_channel.js';
 
 const channelCapacityTokens = 1e6;
 const confCount = 6;
@@ -37,7 +37,7 @@ const times = 1500;
     transaction_vout: <Funding Transaction Output Index Number>
   }
 */
-export default (args, cbk) => {
+const setupChannel = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Make sure the node is connected
@@ -103,3 +103,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'channel'}, cbk));
   });
 };
+
+export { setupChannel }

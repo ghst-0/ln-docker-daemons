@@ -41,7 +41,7 @@ const times = 10000;
     unsettled_balance: <Unsettled Balance Tokens Number>
   }
 */
-export default (args, cbk) => {
+const waitForChannel = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -90,3 +90,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'channel'}, cbk));
   });
 };
+
+export { waitForChannel }

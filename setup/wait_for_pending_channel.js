@@ -13,7 +13,7 @@ const times = 20000;
 
   @returns via cbk
 */
-export default (args, cbk) => {
+const waitForPendingChannel = (args, cbk) => {
   if (!args.id) {
     return cbk([400, 'ExpectedTransactionIdToWaitForChannelPending']);
   }
@@ -41,3 +41,5 @@ export default (args, cbk) => {
   },
   cbk);
 };
+
+export { waitForPendingChannel }

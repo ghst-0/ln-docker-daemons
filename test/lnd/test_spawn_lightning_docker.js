@@ -1,5 +1,5 @@
 import test from 'node:test';
-import { spawnLightningDocker } from '../../index.js';
+import { spawnLightningDocker } from '../../lnd/spawn_lightning_docker.js';
 
 // Spawning a Lightning node docker image should launch
 test('Spawn Lightning node image', async () => {
